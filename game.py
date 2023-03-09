@@ -97,7 +97,7 @@ class Game:
             player.casting_spell = ""
             return True
 
-        if move is "Pass":
+        if move == "Pass":
             player.passed_priority = True
             self.player_with_priority = self.active_player.get_opponent(self)
             if self.players[0].passed_priority and self.players[1].passed_priority and self.stack_is_empty:
@@ -131,7 +131,7 @@ class Game:
             blocking_player = self.nonactive_player
             blocking_player.has_blocked = True
             eligible_blockers = blocking_player.get_eligible_blockers(self)
-            if len(eligible_blockers) is 0:
+            if len(eligible_blockers) == 0:
                 return -1
             all_blocking_assignments = list(range(np.power(len(self.attackers) + 1, len(eligible_blockers))))
             reshaped_assignments = np.reshape(all_blocking_assignments,
@@ -145,8 +145,8 @@ class Game:
         # for each attacker that’s become blocked, the active player announces the damage assignment order
         if self.current_phase_index == Phases.DECLARE_BLOCKERS_STEP_509_2:
             for i in range(len(self.attackers)):
-                if len(self.attackers[i].is_blocked_by) is not 0:
-                    if len(self.attackers[i].damage_assignment_order) is 0:
+                if len(self.attackers[i].is_blocked_by) != 0:
+                    if len(self.attackers[i].damage_assignment_order) == 0:
                         self.attackers[i].set_damage_assignment_order(move)
                         return 1
             return -1
@@ -254,13 +254,13 @@ class Game:
         # for each attacker that’s become blocked, the active player announces the damage assignment order
         if self.current_phase_index == Phases.DECLARE_BLOCKERS_STEP_509_2:
             for i in range(len(self.attackers)):
-                if len(self.attackers[i].is_blocked_by) is not 0:
-                    if len(self.attackers[i].damage_assignment_order) is 0:
+                if len(self.attackers[i].is_blocked_by) != 0:
+                    if len(self.attackers[i].damage_assignment_order) == 0:
                         return list(range(math.factorial(len(self.attackers[i].is_blocked_by))))
             return ["Pass"]
 
         if self.current_phase_index == Phases.COMBAT_DAMAGE_STEP_510_1c:
-            if len(self.attackers) is 0 or self.attacker_counter >= len(self.attackers):
+            if len(self.attackers) == 0 or self.attacker_counter >= len(self.attackers):
                 return ["Pass"]
             return self.get_possible_damage_assignments(player, self.attackers[self.attacker_counter],
                                                         self.blocker_counter)
@@ -282,7 +282,7 @@ class Game:
 
     @staticmethod
     def get_possible_damage_assignments(player, attacker, index):
-        if len(attacker.damage_assignment_order) is 0:
+        if len(attacker.damage_assignment_order) == 0:
             return ["Pass"]
         blocker_i = attacker.damage_assignment_order[index]
         remaining_health = blocker_i.toughness - blocker_i.damage_taken
